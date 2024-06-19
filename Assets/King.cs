@@ -12,7 +12,7 @@ public class King : Piece
         allowedMoves.Add(new Vector2Int (0, 1));
         allowedMoves.Add(new Vector2Int (1, 1));
         
-        Debug.Log(this.name+" has "+allowedMoves.Count+" allowed moves");
+        //Debug.Log(this.name+" has "+allowedMoves.Count+" allowed moves");
     }
 
 }

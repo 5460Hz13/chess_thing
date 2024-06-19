@@ -9,7 +9,7 @@ public class Piece : MonoBehaviour
     public List<Vector2Int> allowedMoves = new List<Vector2Int>();
     [SerializeField]
     private Vector2Int _currentLoc;
-    public Board board;
+    public BoardManager board;
     private bool isPawn;
     private float _playingHeight;
     private BoxCollider2D _collider;
@@ -19,19 +19,28 @@ public class Piece : MonoBehaviour
     private Vector2Int _testLoc;
     private bool _isHeld;
     private bool _canMove;
-    private bool _colour;
+    [SerializeField]
+    private bool colour;
     private BoardTile hitTile;
     private  GameObject hitTile_gO;
     private BoardTile _currentTile;
     private BoardTile _lastTile;
     private Vector2Int _startingLoc;
     
+    public void SetCurrentTile(BoardTile _tile){
+        _currentTile = _tile;
+    }
+    
     public bool GetColour(){
-        return _colour;
+        return colour;
     }
 
-    public void SetColour(bool colour){
-        _colour = colour;
+    public void SetColour(bool _colour){
+        this.colour = _colour;
+        if(!_colour)
+            this.GetComponentsInChildren<MeshRenderer>()[0].material = board.blackColour;
+        else   
+            this.GetComponentsInChildren<MeshRenderer>()[0].material = board.whiteColour;
     }
 
     
@@ -39,6 +48,7 @@ public class Piece : MonoBehaviour
     {
         mainCamera = Camera.main;
         _collider = GetComponent<BoxCollider2D>();
+        board = BoardManager.Instance;
         _playingHeight = board.GetPlayingHeight();
     }
 
@@ -54,13 +64,13 @@ public class Piece : MonoBehaviour
         }
 
         //set starting location
-        _testLoc = FindCurrentTile();
+        _testLoc = _currentTile.GetLocation();
         
         //Debug.Log(this.name+" hittile is "+hitTile);
         _startingLoc = _testLoc;
         _currentLoc = _testLoc;
         //Debug.Log("found "+this.name+" at "+_currentLoc);
-        _currentTile = board.GetTileFromLocation(_startingLoc);
+        //_currentTile = board.GetTileFromLocation(_startingLoc);
         _lastTile = _currentTile;
 
         //center yourself
@@ -104,7 +114,7 @@ public class Piece : MonoBehaviour
                 _currentLoc = _testLoc;
                 _currentTile = hitTile;
                 _currentTile.SetOccupation(true);
-                _currentTile.SetColour(_colour);
+                _currentTile.SetColour(colour);
                 _lastTile.SetOccupation(false);
                 _lastTile = _currentTile;
                 Debug.Log("valid move to "+_currentLoc);
@@ -143,7 +153,7 @@ public class Piece : MonoBehaviour
 
         //check location unoccupied && CHECK COLOUR if occupied
         if(hitTile.GetOccupation()){
-            if(_colour==hitTile.GetColour())
+            if(colour==hitTile.GetColour())
                 return false;
             else
                 //prepare to take the piece
@@ -180,7 +190,7 @@ public class Piece : MonoBehaviour
     public virtual void populateAllowedMoves(){
         //testing move allowances:
         allowedMoves.Add(new Vector2Int (0, 1));
-        Debug.Log(this.name+" has "+allowedMoves.Count+" allowed moves");
+        //Debug.Log(this.name+" has "+allowedMoves.Count+" allowed moves");
     }
 
 

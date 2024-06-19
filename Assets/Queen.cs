@@ -39,7 +39,7 @@ public class Queen : Piece
         allowedMoves.Add(new Vector2Int (0, 8));        
         allowedMoves.Add(new Vector2Int (8, 0));
         
-        Debug.Log(this.name+" has "+allowedMoves.Count+" allowed moves");
+        //Debug.Log(this.name+" has "+allowedMoves.Count+" allowed moves");
     }
 
 }

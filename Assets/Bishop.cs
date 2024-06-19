@@ -16,7 +16,7 @@ public class Bishop : Piece
         allowedMoves.Add(new Vector2Int (6, 6));
         allowedMoves.Add(new Vector2Int (7, 7));
         
-        Debug.Log(this.name+" has "+allowedMoves.Count+" allowed moves");
+        //Debug.Log(this.name+" has "+allowedMoves.Count+" allowed moves");
     }
 
 }
